@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MeConstain Auto</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#080d16;
+    color:#f8fafc;
+    line-height:1.6;
+}
+
+header{
+    min-height:430px;
+    padding:35px 7%;
+    display:flex;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+    background:
+        linear-gradient(115deg,#07101d99,#0b2843cc),
+        url("https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&w=1800&q=85");
+    background-size:cover;
+    background-position:center;
+}
+
+.brand{
+    position:absolute;
+    top:25px;
+    left:7%;
+    font-weight:900;
+    letter-spacing:2px;
+    color:#7dd3fc;
+}
+
+.hero{
+    max-width:750px;
+}
+
+.badge{
+    display:inline-block;
+    background:#0ea5e922;
+    border:1px solid #38bdf855;
+    color:#7dd3fc;
+    padding:6px 12px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.hero h1{
+    font-size:clamp(45px,8vw,80px);
+    line-height:1;
+    margin:20px 0 10px;
+}
+
+.hero h1 span{
+    color:#22d3ee;
+}
+
+.hero p{
+    font-size:19px;
+    color:#dbeafe;
+}
+
+.buttons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:25px;
+}
+
+button{
+    font-family:inherit;
+}
+
+.btn{
+    border:none;
+    padding:12px 18px;
+    border-radius:12px;
+    background:#38bdf8;
+    color:#04111d;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+    background:#67e8f9;
+}
+
+.btn.dark{
+    background:#111827dd;
+    color:white;
+    border:1px solid #64748b;
+}
+
+nav{
+    position:sticky;
+    top:0;
+    z-index:100;
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding:10px 5%;
+    background:#080d16ee;
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid #26364f;
+}
+
+nav button{
+    white-space:nowrap;
+    border:1px solid transparent;
+    background:transparent;
+    color:#cbd5e1;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+nav button:hover,
+nav button.active{
+    background:#16263b;
+    color:#7dd3fc;
+    border-color:#274766;
+}
+
+main{
+    max-width:1250px;
+    margin:auto;
+    padding:40px 5%;
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+    animation:entrada .35s ease;
+}
+
+@keyframes entrada{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.title{
+    font-size:36px;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#94a3b8;
+    max-width:900px;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid #26364f;
+    margin-top: 20px;
+    box-shadow: 0 12px 35px #0005;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:18px;
+    margin-top:25px;
+}
+
+.card{
+    background:linear-gradient(145deg,#121e30,#0e1725);
+    border:1px solid #26364f;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 12px 35px #0005;
+}
+
+.card:hover{
+    border-color:#38bdf866;
+}
+
+.card h3{
+    color:#7dd3fc;
+    margin-bottom:8px;
+}
+
+.card p,
+.card li{
+    color:#cbd5e1;
+}
+
+.feature{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:25px;
+    align-items:center;
+}
+
+.feature img{
+    width:100%;
+    height:340px;
+    object-fit:cover;
+    border-radius:18px;
+    border:1px solid #26364f;
+}
+
+@media(max-width:750px){
+    .feature{
+        grid-template-columns:1fr;
+    }
+
+    .feature img{
+        height:230px;
+    }
+}
+
+.system-card{
+    cursor:pointer;
+    transition:.2s;
+}
+
+.system-card:hover{
+    transform:translateY(-5px);
+}
+
+.icon{
+    font-size:42px;
+    margin-bottom:8px;
+}
+
+.detail{
+    margin-top:25px;
+    border-left:5px solid #22d3ee;
+}
+
+.detail h2{
+    color:#67e8f9;
+    margin:10px 0;
+}
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.step{
+    background:#172235;
+    border:1px solid #26364f;
+    border-radius:14px;
+    padding:18px;
+}
+
+.number{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:35px;
+    height:35px;
+    background:#f97316;
+    border-radius:50%;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.photo{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    border-radius:13px;
+    margin-bottom:15px;
+}
+
+.warning{
+    background:#3b270b;
+    border-left:5px solid #f59e0b;
+    padding:17px;
+    margin-top:22px;
+    border-radius:8px;
+    color:#fde68a;
+}
+
+.quiz-question{
+    padding:20px 0;
+    border-bottom:1px solid #26364f;
+}
+
+.quiz-question label{
+    display:block;
+    background:#172235;
+    padding:11px;
+    border-radius:9px;
+    margin:8px 0;
+    cursor:pointer;
+}
+
+.quiz-question label:hover{
+    background:#21334d;
+}
+
+.progress{
+    width:100%;
+    height:8px;
+    background:#172235;
+    border-radius:20px;
+    overflow:hidden;
+    margin:20px 0;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#38bdf8,#22d3ee);
+    transition:.4s;
+}
+
+.result{
+    margin-top:20px;
+    font-size:21px;
+    color:#67e8f9;
+    font-weight:bold;
+}
+
+footer{
+    text-align:center;
+    padding:40px;
+    color:#64748b;
+    border-top:1px solid #26364f;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="brand">
+🔧 MECONSTAIN AUTO · GRADO 10°
+</div>
+
+<div class="hero">
+
+<span class="badge">
+APRENDIZAJE INTERACTIVO
+</span>
+
+<h1>
+MeConstain <span>Auto</span>
+</h1>
+
+<p>
+Aprende mecánica automotriz desde cero: qué hace cada sistema,
+cómo funciona, qué piezas necesita, cómo cuidarlo con detailing y cómo identificar fallas básicas.
+</p>
+
+<div class="buttons">
+
+<button class="btn" onclick="mostrar('sistemas')">
+Explorar sistemas
+</button>
+
+<button class="btn dark" onclick="mostrar('cuidado')">
+Cuidado & Detailing
+</button>
+
+</div>
+
+</div>
+
+</header>
+
+
+<nav>
+
+<button class="active" onclick="mostrar('inicio',this)">
+Inicio
+</button>
+
+<button onclick="mostrar('video',this)">
+Video
+</button>
+
+<button onclick="mostrar('motor',this)">
+Motor
+</button>
+
+<button onclick="mostrar('sistemas',this)">
+Sistemas
+</button>
+
+<button onclick="mostrar('cuidado',this)">
+Cuidado & Detailing
+</button>
+
+<button onclick="mostrar('diagnostico',this)">
+Diagnóstico
+</button>
+
+<button onclick="mostrar('herramientas',this)">
+Herramientas
+</button>
+
+<button onclick="mostrar('seguridad',this)">
+Seguridad
+</button>
+
+<button onclick="mostrar('quiz',this)">
+Quiz
+</button>
+
+</nav>
+
+
+<main>
+
+<!-- INICIO -->
+
+<section id="inicio" class="section active">
+
+<div class="feature">
+
+<div>
+
+<span class="badge">
+¿QUÉ APRENDERÁS?
+</span>
+
+<h2 class="title">
+Entender el automóvil, no solo memorizar piezas.
+</h2>
+
+<p class="subtitle">
+Un automóvil funciona gracias a varios sistemas que trabajan juntos.
+El motor produce potencia, la transmisión la lleva a las ruedas,
+la electricidad alimenta diferentes componentes y los sistemas de
+frenos, dirección y suspensión permiten controlar el vehículo.
+</p>
+
+</div>
+
+<img
+src="https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&w=1200&q=85"
+alt="Taller automotriz">
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<h3>⚙️ Comprende</h3>
+
+<p>
+Aprende qué hace cada pieza y por qué es necesaria.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🔄 Relaciona</h3>
+
+<p>
+Descubre cómo los diferentes sistemas trabajan juntos.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>✨ Cuida</h3>
+
+<p>
+Aplica técnicas de detailing y mantenimiento preventivo.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🧠 Practica</h3>
+
+<p>
+Pon a prueba tus conocimientos con actividades y preguntas.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- VIDEO -->
+
+<section id="video" class="section">
+
+<h2 class="title">
+🎬 Video Explicativo
+</h2>
+
+<p class="subtitle">
+Observa en este video detallado el funcionamiento interno del motor de 4 tiempos y cómo interactúan sus partes en tiempo real.
+</p>
+
+<div class="video-container">
+<iframe 
+    src="https://www.youtube.com/embed/rcbPiYQM1UA" 
+    title="Funcionamiento del motor de combustión interna" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+</iframe>
+</div>
+
+</section>
+
+
+<!-- MOTOR -->
+
+<section id="motor" class="section">
+
+<h2 class="title">
+⚙️ El Motor de Combustión Interna
+</h2>
+
+<p class="subtitle">
+El motor es el corazón térmico y mecánico del vehículo. Su función principal es transformar la energía química almacenada en el combustible (gasolina o diésel) en energía térmica mediante una explosión controlada, para luego convertirla en energía mecánica de rotación disponible en las ruedas.
+</p>
+
+<div class="card" style="margin-top:20px;">
+<h3>🔥 Fundamento Termodinámico: El Ciclo Otto</h3>
+<p>
+Para que la transformación energética sea eficiente, el motor opera en un ciclo cerrado de 4 tiempos (Ciclo Otto). Este proceso requiere una sincronización milimétrica controlada por la correa o cadena de distribución entre el árbol de levas y el cigüeñal:
+</p>
+</div>
+
+<div class="feature" style="margin-top:20px;">
+
+<div class="card">
+
+<div class="steps">
+
+<div class="step">
+<div class="number">1</div>
+<b>Admisión</b>
+<p>
+El árbol de levas abre la válvula de admisión. El pistón desciende desde el Punto Muerto Superior (PMS) hasta el Punto Muerto Inferior (PMI), generando una depresión o vacío que succiona la mezcla de aire y combustible.
+</p>
+</div>
+
+<div class="step">
+<div class="number">2</div>
+<b>Compresión</b>
+<p>
+Ambas válvulas se cierran herméticamente. El pistón asciende desde el PMI al PMS, reduciendo el volumen de la cámara y elevando exponencialmente la presión y temperatura de la mezcla.
+</p>
+</div>
+
+<div class="step">
+<div class="number">3</div>
+<b>Combustión / Expansión</b>
+<p>
+La bujía emite un arco eléctrico de alto voltaje (chispa). La mezcla se inflama violentamente, expandiendo los gases rápidamente y empujando el pistón hacia abajo con máxima fuerza. Es el único tiempo que produce trabajo útil.
+</p>
+</div>
+
+<div class="step">
+<div class="number">4</div>
+<b>Escape</b>
+<p>
+Se abre la válvula de escape. El pistón vuelve a subir al PMS, expulsando todos los gases quemados hacia el colector de escape y el catalizador para reiniciar el ciclo.
+</p>
+</div>
+
+</div>
+
+</div>
+
+<img
+src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=85"
+alt="Motor en detalle">
+
+</div>
+
+<h2 class="title" style="margin-top:40px">
+Análisis Detallado de Componentes Clave
+</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>🔩 Conjunto Pistón, Anillos y Biela</h3>
+<p>
+<b>Función:</b> Recibe el impacto del gas en expansión. Los anillos o rines de compresión aseguran el hermetismo, mientras que el rin de aceite barre el lubricante de las paredes del cilindro. La biela actúa como brazo articulado transmitiendo el esfuerzo rectilíneo al cigüeñal.
+</p>
+</div>
+
+<div class="card">
+<h3>🔄 Cigüeñal y Cojinetes (Bancada)</h3>
+<p>
+<b>Función:</b> Es el eje acodado del motor. Convierte la fuerza alternada (arriba/abajo) de los pistones en un torque o movimiento circular continuo. Apoyado sobre cojinetes de metal blando que flotan en una película de aceite bajo presión.
+</p>
+</div>
+
+<div class="card">
+<h3>🚪 Culata y Tren de Válvulas</h3>
+<p>
+<b>Función:</b> La culata o tapa de cilindros cierra el bloque superior. Alberga las cámaras de combustión, bujías/inyectores y las válvulas. El árbol de levas abre las válvulas accionadas hidráulica o mecánicamente.
+</p>
+</div>
+
+<div class="card">
+<h3>🔥 Sistema de Encendido e Inyección</h3>
+<p>
+<b>Función:</b> La unidad de control (ECU) calcula la cantidad exacta de combustible inyectado (mezcla estequiométrica 14.7:1) y sincroniza el salto de chispa mediante la bobina de encendido.
+</p>
+</div>
+
+<div class="card">
+<h3>🛢️ Circuito de Lubricación Forzada</h3>
+<p>
+<b>Función:</b> Evita la soldadura en frío (desgaste severo por fricción metal con metal). Una bomba impulsa aceite a presión constante hacia los pasajes internos del bloque, reduciendo la temperatura y limpiando impurezas.
+</p>
+</div>
+
+<div class="card">
+<h3>🌡️ Gestión Térmica</h3>
+<p>
+<b>Función:</b> La combustión genera temperaturas superiores a 2000 °C. El sistema de refrigeración hace circular líquido anticongelante mediante la bomba de agua para mantener el bloque en su rango idóneo (85°C - 95°C).
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SISTEMAS -->
+
+<section id="sistemas" class="section">
+
+<h2 class="title">
+🚗 Sistemas del automóvil
+</h2>
+
+<p class="subtitle">
+Haz clic en cada sistema para conocer para qué sirve,
+cómo funciona, qué componentes tiene y qué necesita.
+</p>
+
+
+<div class="grid">
+
+
+<div class="card system-card" onclick="detalle('lubricacion')">
+
+<div class="icon">🛢️</div>
+
+<h3>Lubricación</h3>
+
+<p>
+Reduce fricción y desgaste.
+</p>
+
+</div>
+
+
+<div class="card system-card" onclick="detalle('refrigeracion')">
+
+<div class="icon">🌡️</div>
+
+<h3>Refrigeración</h3>
+
+<p>
+Controla la temperatura del motor.
+</p>
+
+</div>
+
+
+<div class="card system-card" onclick="detalle('frenos')">
+
+<div class="icon">🛑</div>
+
+<h3>Frenos</h3>
+
+<p>
+Permite reducir la velocidad y detener.
+</p>
+
+</div>
+
+
+<div class="card system-card" onclick="detalle('electrico')">
+
+<div class="icon">🔋</div>
+
+<h3>Electricidad</h3>
+
+<p>
+Alimenta y controla componentes eléctricos.
+</p>
+
+</div>
+
+
+<div class="card system-card" onclick="detalle('transmision')">
+
+<div class="icon">⚙️</div>
+
+<h3>Transmisión</h3>
+
+<p>
+Lleva la potencia hacia las ruedas.
+</p>
+
+</div>
+
+
+<div class="card system-card" onclick="detalle('suspension')">
+
+<div class="icon">🛞</div>
+
+<h3>Suspensión</h3>
+
+<p>
+Controla movimientos y contacto con el suelo.
+</p>
+
+</div>
+
+
+<div class="card system-card" onclick="detalle('direccion')">
+
+<div class="icon">↔️</div>
+
+<h3>Dirección</h3>
+
+<p>
+Permite orientar las ruedas.
+</p>
+
+</div>
+
+
+<div class="card system-card" onclick="detalle('escape')">
+
+<div class="icon">💨</div>
+
+<h3>Escape</h3>
+
+<p>
+Conduce los gases de escape.
+</p>
+
+</div>
+
+</div>
+
+
+<div id="detalle" class="card detail">
+
+<h2>
+Selecciona un sistema
+</h2>
+
+<p>
+Aquí aparecerá información detallada.
+</p>
+
+</div>
+
+</section>
+
+
+<!-- CUIDADO Y DETAILING -->
+
+<section id="cuidado" class="section">
+
+<h2 class="title">
+✨ Cuidado del Vehículo & Car Detailing
+</h2>
+
+<p class="subtitle">
+El Mantenimiento Estético y Preventivo prolonga la vida útil de los materiales, mantiene el valor de reventa del vehículo y evita desgastes prematuros tanto en la carrocería como en la mecánica.
+</p>
+
+<div class="grid">
+
+<div class="card">
+<h3>🪣 Lavado Seguro (Método de los 2 Cubos)</h3>
+<p>
+<b>Técnica:</b> Usa un cubo para el agua con champú de pH neutro y otro con agua limpia para enjuagar el guante de microfibra. Esto evita reintroducir contaminantes y crear microrrayones ("swirls") en la pintura.
+</p>
+</div>
+
+<div class="card">
+<h3>🧽 Descontaminado de Pintura</h3>
+<p>
+<b>Procedimiento:</b> Uso de la barra de arcilla (Clay Bar) junto a un lubricante especial. Elimina contaminantes incrustados en los poros del barniz como alquitrán, pulverización de pintura y lluvia ácida que el lavado normal no remueve.
+</p>
+</div>
+
+<div class="card">
+<h3>🛡️ Protección de Pintura (Cera, Sellador o Cerámico)</h3>
+<p>
+<b>Función:</b> Las ceras de carnauba o selladores sintéticos y cerámicos crean una capa de sacrificio hidrofóbica que repele el agua, protege contra la radiación UV del sol, heces de aves y corrosión.
+</p>
+</div>
+
+<div class="card">
+<h3>🧼 Limpieza y Detallado del Vano Motor</h3>
+<p>
+<b>Procedimiento:</b> Limpieza en seco o con desengrasante acuoso no corrosivo y pinceles de cerda suave. Protege conectores eléctricos, remueve acumulación de tierra o aceite y permite detectar fugas de fluidos tempranamente.
+</p>
+</div>
+
+<div class="card">
+<h3>🪑 Mantenimiento de Interiores y Plásticos</h3>
+<p>
+<b>Cuidado:</b> Limpieza de tapicería con limpiadores multipropósito (APC). Acondicionamiento de plásticos y cuero con protectores con filtro UV para evitar que el sol degrade, reseque o agriete el salpicadero y los asientos.
+</p>
+</div>
+
+<div class="card">
+<h3>🔍 Revisiones de Rutina e Inspección Preventiva</h3>
+<p>
+<b>Mantenimiento:</b> Revisar semanalmente la presión de aire en frío de los neumáticos, comprobar el nivel de aceite con la varilla indicadora y el nivel de líquido refrigerante. Ayuda a detectar fallas antes de que sean costosas.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- DIAGNOSTICO -->
+
+<section id="diagnostico" class="section">
+
+<h2 class="title">
+🔍 Diagnóstico básico
+</h2>
+
+<p class="subtitle">
+En mecánica un síntoma puede tener varias causas.
+Primero se observa, después se comprueba y finalmente se determina
+qué procedimiento realizar.
+</p>
+
+
+<div class="grid">
+
+
+<div class="card">
+
+<h3>🌡️ El motor se sobrecalienta</h3>
+
+<p>
+<b>Revisar:</b>
+nivel de refrigerante, fugas, ventilador,
+termostato y circulación.
+</p>
+
+<p>
+<b>Posibles causas:</b>
+falta de refrigerante, problemas de circulación
+o fallas del ventilador.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🔋 El vehículo no enciende</h3>
+
+<p>
+<b>Revisar:</b>
+batería, conexiones eléctricas,
+motor de arranque y sistemas de combustible.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🛑 Vibra al frenar</h3>
+
+<p>
+Puede ser necesario revisar discos,
+pastillas y otros componentes del sistema
+de frenos.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>💨 Sale humo</h3>
+
+<p>
+Observar el color, cantidad y momento
+en que aparece el humo.
+Estos datos ayudan al diagnóstico.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🔊 Aparece un ruido</h3>
+
+<p>
+Preguntar cuándo ocurre:
+al acelerar, frenar, girar o pasar por un bache.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🚨 Se enciende un testigo</h3>
+
+<p>
+Las luces del tablero pueden indicar
+que algún sistema necesita revisión.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="warning">
+
+⚠️ El diagnóstico de esta aplicación es educativo.
+No reemplaza una revisión profesional.
+Nunca realices trabajos peligrosos sin herramientas,
+capacitación y supervisión.
+
+</div>
+
+</section>
+
+
+<!-- HERRAMIENTAS -->
+
+<section id="herramientas" class="section">
+
+<h2 class="title">
+🧰 Herramientas del taller
+</h2>
+
+<p class="subtitle">
+Conocer una herramienta significa saber para qué sirve,
+cómo utilizarla y qué riesgos tiene.
+</p>
+
+
+<div class="grid">
+
+
+<div class="card">
+
+<h3>🔧 Llaves</h3>
+
+<p>
+Sirven para apretar o aflojar tuercas y tornillos.
+La medida debe coincidir con el elemento.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🪛 Destornilladores</h3>
+
+<p>
+Permiten apretar o aflojar tornillos.
+La punta debe corresponder al tipo de cabeza.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>📏 Multímetro</h3>
+
+<p>
+Permite medir magnitudes eléctricas como
+voltaje, resistencia y continuidad,
+dependiendo de la configuración.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🔩 Llave de torque</h3>
+
+<p>
+Permite aplicar un par de apriete determinado
+cuando el fabricante proporciona una especificación.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>💡 Lámpara</h3>
+
+<p>
+Ayuda a observar zonas oscuras del motor,
+debajo del vehículo y dentro del compartimiento.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🧤 Equipo de protección</h3>
+
+<p>
+Gafas, guantes, ropa adecuada y calzado de seguridad
+ayudan a disminuir riesgos.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SEGURIDAD -->
+
+<section id="seguridad" class="section">
+
+<h2 class="title">
+🦺 Seguridad en el taller
+</h2>
+
+<div class="grid">
+
+
+<div class="card">
+
+<h3>Antes de trabajar</h3>
+
+<ul>
+
+<li>Conocer el procedimiento.</li>
+
+<li>Identificar los riesgos.</li>
+
+<li>Preparar las herramientas.</li>
+
+<li>Usar protección adecuada.</li>
+
+</ul>
+
+</div>
+
+
+<div class="card">
+
+<h3>Durante el trabajo</h3>
+
+<ul>
+
+<li>Mantener el área organizada.</li>
+
+<li>No usar herramientas dañadas.</li>
+
+<li>No improvisar soportes.</li>
+
+<li>Trabajar con supervisión cuando sea necesario.</li>
+
+</ul>
+
+</div>
+
+
+<div class="card">
+
+<h3>⚠️ Regla importante</h3>
+
+<p>
+Nunca trabajes debajo de un vehículo sostenido
+solamente por un gato hidráulico.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- QUIZ -->
+
+<section id="quiz" class="section">
+
+<h2 class="title">
+🧠 Reto MeConstain Auto
+</h2>
+
+<p class="subtitle">
+Responde las preguntas y comprueba cuánto aprendiste.
+</p>
+
+<div class="progress">
+<div id="barra" class="progress-bar"></div>
+</div>
+
+
+<form id="quizForm">
+
+
+<div class="quiz-question">
+
+<b>1. ¿Qué transforma principalmente el motor?</b>
+
+<label>
+<input type="radio" name="q1" value="a">
+Energía química en movimiento mecánico
+</label>
+
+<label>
+<input type="radio" name="q1" value="b">
+Agua en electricidad
+</label>
+
+<label>
+<input type="radio" name="q1" value="c">
+Aire en combustible
+</label>
+
+</div>
+
+
+<div class="quiz-question">
+
+<b>2. ¿Qué pieza transforma el movimiento del pistón en giro?</b>
+
+<label>
+<input type="radio" name="q2" value="a">
+Radiador
+</label>
+
+<label>
+<input type="radio" name="q2" value="b">
+Cigüeñal
+</label>
+
+<label>
+<input type="radio" name="q2" value="c">
+Batería
+</label>
+
+</div>
+
+
+<div class="quiz-question">
+
+<b>3. ¿Cuál es una función del aceite?</b>
+
+<label>
+<input type="radio" name="q3" value="a">
+Reducir fricción y desgaste
+</label>
+
+<label>
+<input type="radio" name="q3" value="b">
+Inflar neumáticos
+</label>
+
+<label>
+<input type="radio" name="q3" value="c">
+Producir electricidad
+</label>
+
+</div>
+
+
+<div class="quiz-question">
+
+<b>4. ¿Qué sistema controla la temperatura del motor?</b>
+
+<label>
+<input type="radio" name="q4" value="a">
+Refrigeración
+</label>
+
+<label>
+<input type="radio" name="q4" value="b">
+Dirección
+</label>
+
+<label>
+<input type="radio" name="q4" value="c">
+Escape
+</label>
+
+</div>
+
+
+<div class="quiz-question">
+
+<b>5. ¿Qué puede medir un multímetro?</b>
+
+<label>
+<input type="radio" name="q5" value="a">
+Solo temperatura
+</label>
+
+<label>
+<input type="radio" name="q5" value="b">
+Magnitudes eléctricas
+</label>
+
+<label>
+<input type="radio" name="q5" value="c">
+Nivel de aceite
+</label>
+
+</div>
+
+
+<div class="quiz-question">
+
+<b>6. ¿Qué sistema transmite la potencia hacia las ruedas?</b>
+
+<label>
+<input type="radio" name="q6" value="a">
+Transmisión
+</label>
+
+<label>
+<input type="radio" name="q6" value="b">
+Refrigeración
+</label>
+
+<label>
+<input type="radio" name="q6" value="c">
+Escape
+</label>
+
+</div>
+
+
+<div class="quiz-question">
+
+<b>7. ¿Qué debes hacer si no sabes realizar una reparación?</b>
+
+<label>
+<input type="radio" name="q7" value="a">
+Intentarla sin protección
+</label>
+
+<label>
+<input type="radio" name="q7" value="b">
+Solicitar supervisión
+</label>
+
+<label>
+<input type="radio" name="q7" value="c">
+Ignorar el problema
+</label>
+
+</div>
+
+
+<div class="quiz-question">
+
+<b>8. ¿Qué sistema permite detener el vehículo?</b>
+
+<label>
+<input type="radio" name="q8" value="a">
+Frenos
+</label>
+
+<label>
+<input type="radio" name="q8" value="b">
+Escape
+</label>
+
+<label>
+<input type="radio" name="q8" value="c">
+Refrigeración
+</label>
+
+</div>
+
+
+<button class="btn" type="button" onclick="calificar()">
+Calificar
+</button>
+
+</form>
+
+
+<div id="resultado" class="result"></div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+🔧 MeConstain Auto<br>
+Aplicación educativa de Mecánica Automotriz · Grado 10°
+
+</footer>
+
+
+<script>
+
+function mostrar(id,boton){
+
+document.querySelectorAll(".section")
+.forEach(s=>s.classList.remove("active"));
+
+document.getElementById(id)
+.classList.add("active");
+
+document.querySelectorAll("nav button")
+.forEach(b=>b.classList.remove("active"));
+
+if(boton){
+boton.classList.add("active");
+}
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+const sistemas={
+
+lubricacion:{
+titulo:"🛢️ Sistema de lubricación",
+sirve:"Reduce la fricción entre piezas móviles, disminuye el desgaste y ayuda a controlar la temperatura.",
+partes:"Cárter, bomba de aceite, filtro de aceite, conductos y aceite.",
+funciona:"La bomba mueve el aceite desde el cárter hacia diferentes partes del motor. El aceite forma una película entre superficies metálicas.",
+necesita:"Aceite con la especificación correcta, nivel adecuado, presión y circulación.",
+fallas:"Fugas, bajo nivel, presión insuficiente, aceite degradado o filtro obstruido."
+},
+
+refrigeracion:{
+titulo:"🌡️ Sistema de refrigeración",
+sirve:"Mantiene el motor dentro de un rango de temperatura adecuado.",
+partes:"Radiador, bomba de agua, termostato, ventilador, refrigerante y mangueras.",
+funciona:"El refrigerante circula por el motor, absorbe calor y pasa por el radiador para liberar parte de ese calor.",
+necesita:"Refrigerante adecuado, circulación, radiador en buen estado y control de temperatura.",
+fallas:"Fugas, bajo nivel de refrigerante, termostato defectuoso o problemas con el ventilador."
+},
+
+frenos:{
+titulo:"🛑 Sistema de frenos",
+sirve:"Permite reducir la velocidad y detener el vehículo.",
+partes:"Pedal, cilindro maestro, líquido de frenos, tuberías, cálipers, discos, pastillas o tambores.",
+funciona:"Al accionar el pedal se genera presión que se transmite hacia los mecanismos que presionan las superficies de frenado.",
+necesita:"Componentes en buen estado, presión adecuada y material de fricción suficiente.",
+fallas:"Desgaste, fugas, aire en el circuito, vibraciones o componentes deteriorados."
+},
+
+electrico:{
+titulo:"🔋 Sistema eléctrico",
+sirve:"Permite arrancar el motor, iluminar, alimentar sensores y controlar diferentes sistemas.",
+partes:"Batería, alternador, motor de arranque, fusibles, cables, sensores y módulos.",
+funciona:"La batería proporciona energía para el arranque y el alternador genera electricidad cuando el motor está funcionando.",
+necesita:"Batería cargada, conexiones correctas y circuitos en buen estado.",
+fallas:"Batería descargada, fusibles dañados, cables defectuosos o problemas de carga."
+},
+
+transmision:{
+titulo:"⚙️ Sistema de transmisión",
+sirve:"Transmite la potencia del motor hacia las ruedas y adapta velocidad y fuerza.",
+partes:"Embrague o convertidor, caja de cambios, ejes y diferencial.",
+funciona:"La transmisión recibe el giro del motor, modifica la relación de velocidad y transmite el movimiento hacia las ruedas.",
+necesita:"Lubricación adecuada y componentes correctamente ajustados.",
+fallas:"Desgaste, fugas, problemas de embrague o daños internos."
+},
+
+suspension:{
+titulo:"🛞 Sistema de suspensión",
+sirve:"Ayuda a mantener el contacto de las ruedas con el suelo y controla los movimientos de la carrocería.",
+partes:"Resortes, amortiguadores, brazos, bujes y soportes.",
+funciona:"Los resortes absorben movimientos y los amortiguadores controlan las oscilaciones.",
+necesita:"Componentes sin daños y geometría adecuada.",
+fallas:"Ruidos, rebotes excesivos, desgaste irregular de neumáticos o amortiguadores dañados."
+},
+
+direccion:{
+titulo:"↔️ Sistema de dirección",
+sirve:"Permite cambiar la dirección del vehículo.",
+partes:"Volante, columna, mecanismo de dirección, barras y terminales.",
+funciona:"El movimiento del volante se transmite mediante el mecanismo de dirección hacia las ruedas orientables.",
+necesita:"Componentes firmes, correctamente ajustados y sin holguras excesivas.",
+fallas:"Holguras, dificultad para girar, ruidos o desgaste."
+},
+
+escape:{
+titulo:"💨 Sistema de escape",
+sirve:"Conduce los gases producidos durante la combustión y ayuda a reducir ruido y emisiones.",
+partes:"Múltiple, tuberías, catalizador, sensores y silenciador, dependiendo del vehículo.",
+funciona:"Los gases salen del motor, recorren el sistema y pasan por componentes que reducen ruido y determinadas emisiones.",
+necesita:"Conductos libres de obstrucciones y componentes en buen estado.",
+fallas:"Fugas, ruido excesivo, obstrucciones o componentes deteriorados."
+}
+
+};
+
+
+function detalle(nombre){
+
+const s=sistemas[nombre];
+
+document.getElementById("detalle").innerHTML=`
+
+<span class="badge">SISTEMA AUTOMOTRIZ</span>
+
+<h2>${s.titulo}</h2>
+
+<p>
+<b>¿Para qué sirve?</b><br>
+${s.sirve}
+</p>
+
+<p>
+<b>¿Cuáles son sus partes?</b><br>
+${s.partes}
+</p>
+
+<p>
+<b>¿Cómo funciona?</b><br>
+${s.funciona}
+</p>
+
+<p>
+<b>¿Qué necesita para funcionar?</b><br>
+${s.necesita}
+</p>
+
+<p>
+<b>¿Qué puede fallar?</b><br>
+${s.fallas}
+</p>
+
+`;
+
+document.getElementById("detalle")
+.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+}
+
+
+function calificar(){
+
+const respuestas={
+q1:"a",
+q2:"b",
+q3:"a",
+q4:"a",
+q5:"b",
+q6:"a",
+q7:"b",
+q8:"a"
+};
+
+let puntos=0;
+
+for(let pregunta in respuestas){
+
+const seleccion=document.querySelector(
+`input[name="${pregunta}"]:checked`
+);
+
+if(seleccion &&
+seleccion.value===respuestas[pregunta]){
+
+puntos++;
+
+}
+
+}
+
+const porcentaje=(puntos/8)*100;
+
+document.getElementById("barra").style.width=
+porcentaje+"%";
+
+let mensaje="";
+
+if(porcentaje>=90){
+
+mensaje="🏆 ¡Excelente! Dominas muy bien los conceptos.";
+
+}else if(porcentaje>=70){
+
+mensaje="🔧 ¡Muy bien! Tienes una buena base.";
+
+}else if(porcentaje>=50){
+
+mensaje="📚 Vas bien, pero conviene repasar algunos sistemas.";
+
+}else{
+
+mensaje="💪 Sigue estudiando y vuelve a intentarlo.";
+
+}
+
+document.getElementById("resultado").innerHTML=
+`Resultado: ${puntos}/8 (${porcentaje}%)<br>${mensaje}`;
+
+}
+
+</script>
+
+</body>
+</html>
