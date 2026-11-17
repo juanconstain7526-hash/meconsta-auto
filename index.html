@@ -323,10 +323,32 @@ main{
     border-radius:9px;
     margin:8px 0;
     cursor:pointer;
+    border:1px solid transparent;
+    transition:.2s;
 }
 
 .quiz-question label:hover{
     background:#21334d;
+}
+
+.quiz-question label.opcion-correcta{
+    background:#14532d !important;
+    border-color:#22c55e !important;
+    color:#dcfce7 !important;
+    font-weight:bold;
+}
+
+.quiz-question label.opcion-incorrecta{
+    background:#7f1d1d !important;
+    border-color:#ef4444 !important;
+    color:#fee2e2 !important;
+}
+
+.estado-pregunta{
+    display:inline-block;
+    margin-left:8px;
+    font-size:14px;
+    font-weight:bold;
 }
 
 .progress{
@@ -341,14 +363,14 @@ main{
 .progress-bar{
     width:0%;
     height:100%;
-    background:linear-gradient(90deg,#38bdf8,#22d3ee);
+    background:linear-gradient(90deg,#ef4444,#f87171);
     transition:.4s;
 }
 
 .result{
     margin-top:20px;
     font-size:21px;
-    color:#67e8f9;
+    color:#ef4444;
     font-weight:bold;
 }
 
@@ -1152,7 +1174,7 @@ solamente por un gato hidráulico.
 </h2>
 
 <p class="subtitle">
-Responde las preguntas y comprueba cuánto aprendiste.
+Responde las preguntas y comprueba cuánto aprendiste. Cada intento selecciona preguntas distintas.
 </p>
 
 <div class="progress">
@@ -1162,186 +1184,17 @@ Responde las preguntas y comprueba cuánto aprendiste.
 
 <form id="quizForm">
 
+<div id="preguntasContainer"></div>
 
-<div class="quiz-question">
-
-<b>1. ¿Qué transforma principalmente el motor?</b>
-
-<label>
-<input type="radio" name="q1" value="a">
-Energía química en movimiento mecánico
-</label>
-
-<label>
-<input type="radio" name="q1" value="b">
-Agua en electricidad
-</label>
-
-<label>
-<input type="radio" name="q1" value="c">
-Aire en combustible
-</label>
-
-</div>
-
-
-<div class="quiz-question">
-
-<b>2. ¿Qué pieza transforma el movimiento del pistón en giro?</b>
-
-<label>
-<input type="radio" name="q2" value="a">
-Radiador
-</label>
-
-<label>
-<input type="radio" name="q2" value="b">
-Cigüeñal
-</label>
-
-<label>
-<input type="radio" name="q2" value="c">
-Batería
-</label>
-
-</div>
-
-
-<div class="quiz-question">
-
-<b>3. ¿Cuál es una función del aceite?</b>
-
-<label>
-<input type="radio" name="q3" value="a">
-Reducir fricción y desgaste
-</label>
-
-<label>
-<input type="radio" name="q3" value="b">
-Inflar neumáticos
-</label>
-
-<label>
-<input type="radio" name="q3" value="c">
-Producir electricidad
-</label>
-
-</div>
-
-
-<div class="quiz-question">
-
-<b>4. ¿Qué sistema controla la temperatura del motor?</b>
-
-<label>
-<input type="radio" name="q4" value="a">
-Refrigeración
-</label>
-
-<label>
-<input type="radio" name="q4" value="b">
-Dirección
-</label>
-
-<label>
-<input type="radio" name="q4" value="c">
-Escape
-</label>
-
-</div>
-
-
-<div class="quiz-question">
-
-<b>5. ¿Qué puede medir un multímetro?</b>
-
-<label>
-<input type="radio" name="q5" value="a">
-Solo temperatura
-</label>
-
-<label>
-<input type="radio" name="q5" value="b">
-Magnitudes eléctricas
-</label>
-
-<label>
-<input type="radio" name="q5" value="c">
-Nivel de aceite
-</label>
-
-</div>
-
-
-<div class="quiz-question">
-
-<b>6. ¿Qué sistema transmite la potencia hacia las ruedas?</b>
-
-<label>
-<input type="radio" name="q6" value="a">
-Transmisión
-</label>
-
-<label>
-<input type="radio" name="q6" value="b">
-Refrigeración
-</label>
-
-<label>
-<input type="radio" name="q6" value="c">
-Escape
-</label>
-
-</div>
-
-
-<div class="quiz-question">
-
-<b>7. ¿Qué debes hacer si no sabes realizar una reparación?</b>
-
-<label>
-<input type="radio" name="q7" value="a">
-Intentarla sin protección
-</label>
-
-<label>
-<input type="radio" name="q7" value="b">
-Solicitar supervisión
-</label>
-
-<label>
-<input type="radio" name="q7" value="c">
-Ignorar el problema
-</label>
-
-</div>
-
-
-<div class="quiz-question">
-
-<b>8. ¿Qué sistema permite detener el vehículo?</b>
-
-<label>
-<input type="radio" name="q8" value="a">
-Frenos
-</label>
-
-<label>
-<input type="radio" name="q8" value="b">
-Escape
-</label>
-
-<label>
-<input type="radio" name="q8" value="c">
-Refrigeración
-</label>
-
-</div>
-
-
+<div class="buttons" style="margin-top:20px;">
 <button class="btn" type="button" onclick="calificar()">
 Calificar
 </button>
+
+<button id="btnRepetir" class="btn dark" type="button" onclick="repetirQuiz()" style="display:none;">
+Repetir quiz (Nuevas preguntas)
+</button>
+</div>
 
 </form>
 
@@ -1509,65 +1362,282 @@ block:"center"
 }
 
 
+// BANCO DE 20 PREGUNTAS PARA VARIAR EL QUIZ
+const bancoPreguntas = [
+{
+    pregunta: "¿Qué transforma principalmente el motor de combustión interna?",
+    opciones: [
+        { texto: "Energía química en movimiento mecánico", correcta: true },
+        { texto: "Agua en electricidad", correcta: false },
+        { texto: "Aire en combustible", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué pieza transforma el movimiento lineal del pistón en giro continuo?",
+    opciones: [
+        { texto: "Cigüeñal", correcta: true },
+        { texto: "Radiador", correcta: false },
+        { texto: "Batería", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Cuál es una función principal del aceite en el motor?",
+    opciones: [
+        { texto: "Reducir fricción y desgaste entre metales", correcta: true },
+        { texto: "Inflar los neumáticos", correcta: false },
+        { texto: "Producir chispa eléctrica", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué sistema controla la temperatura óptima del motor?",
+    opciones: [
+        { texto: "Refrigeración", correcta: true },
+        { texto: "Dirección", correcta: false },
+        { texto: "Escape", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué magnitudes permite medir un multímetro?",
+    opciones: [
+        { texto: "Magnitudes eléctricas (voltaje, resistencia, continuidad)", correcta: true },
+        { texto: "Solo presión de neumáticos", correcta: false },
+        { texto: "Nivel de aceite en el cárter", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué sistema transmite la potencia del motor hacia las ruedas?",
+    opciones: [
+        { texto: "Transmisión", correcta: true },
+        { texto: "Refrigeración", correcta: false },
+        { texto: "Escape", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué debes hacer si no sabes realizar una reparación en el taller?",
+    opciones: [
+        { texto: "Solicitar supervisión antes de actuar", correcta: true },
+        { texto: "Intentarla rápidamente sin protección", correcta: false },
+        { texto: "Improvisar herramientas", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué sistema permite reducir la velocidad y detener el vehículo?",
+    opciones: [
+        { texto: "Frenos", correcta: true },
+        { texto: "Escape", correcta: false },
+        { texto: "Suspensión", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Cuál es el único tiempo del Ciclo Otto que produce trabajo o fuerza útil?",
+    opciones: [
+        { texto: "Combustión / Expansión", correcta: true },
+        { texto: "Admisión", correcta: false },
+        { texto: "Escape", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué elemento produce la chispa eléctrica que enciende la mezcla en motores a gasolina?",
+    opciones: [
+        { texto: "La bujía", correcta: true },
+        { texto: "El termostato", correcta: false },
+        { texto: "El filtro de aire", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Cuál es la proporción estequiométrica ideal de aire y gasolina?",
+    opciones: [
+        { texto: "14.7 partes de aire por 1 de gasolina", correcta: true },
+        { texto: "5 partes de aire por 5 de gasolina", correcta: false },
+        { texto: "1 parte de aire por 20 de gasolina", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Para qué sirve el método de los 2 cubos en el Car Detailing?",
+    opciones: [
+        { texto: "Evitar microrrayones en la pintura al enjuagar el guante aparte", correcta: true },
+        { texto: "Mezclar refrigerante con agua destilada", correcta: false },
+        { texto: "Limpiar el interior del tubo de escape", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué herramienta de detailing elimina contaminantes incrustados en los poros de la pintura?",
+    opciones: [
+        { texto: "Barra de arcilla (Clay Bar)", correcta: true },
+        { texto: "Llave de torque", correcta: false },
+        { texto: "Multímetro", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Cuál es una regla fundamental de seguridad al elevar un vehículo?",
+    opciones: [
+        { texto: "Nunca trabajar debajo sostenido solo por un gato hidráulico", correcta: true },
+        { texto: "Usar cualquier bloque de madera como soporte", correcta: false },
+        { texto: "Dejar el motor encendido mientras se revisa abajo", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué pieza une el pistón con el cigüeñal?",
+    opciones: [
+        { texto: "La biela", correcta: true },
+        { texto: "El árbol de levas", correcta: false },
+        { texto: "El radiador", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué componente genera electricidad para recargar la batería cuando el motor está funcionando?",
+    opciones: [
+        { texto: "El alternador", correcta: true },
+        { texto: "El motor de arranque", correcta: false },
+        { texto: "El cilindro maestro", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué sistema ayuda a mantener el contacto de las ruedas con el suelo y absorbe irregularidades?",
+    opciones: [
+        { texto: "Suspensión", correcta: true },
+        { texto: "Escape", correcta: false },
+        { texto: "Lubricación", correcta: false }
+    ]
+},
+{
+    pregunta: "Si el motor se sobrecalienta, ¿qué es lo primero que se debe verificar?",
+    opciones: [
+        { texto: "Nivel de refrigerante, fugas y funcionamiento del ventilador", correcta: true },
+        { texto: "Presión de los neumáticos traseros", correcta: false },
+        { texto: "Estado de las pastillas de freno", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Para qué sirve una llave de torque (dinamométrica)?",
+    opciones: [
+        { texto: "Aplicar un par de apriete exacto según especificación del fabricante", correcta: true },
+        { texto: "Medir el voltaje de la batería", correcta: false },
+        { texto: "Descontaminar los plásticos interiores", correcta: false }
+    ]
+},
+{
+    pregunta: "¿Qué componente del sistema de escape ayuda a reducir emisiones contaminantes?",
+    opciones: [
+        { texto: "El catalizador", correcta: true },
+        { texto: "El cárter", correcta: false },
+        { texto: "El diferencial", correcta: false }
+    ]
+}
+];
+
+let preguntasActuales = [];
+
+function mezclarArray(array) {
+    const copia = [...array];
+    for (let i = copia.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copia[i], copia[j]] = [copia[j], copia[i]];
+    }
+    return copia;
+}
+
+function generarQuiz() {
+    const contenedor = document.getElementById("preguntasContainer");
+    contenedor.innerHTML = "";
+
+    // Seleccionar 8 preguntas aleatorias del banco
+    preguntasActuales = mezclarArray(bancoPreguntas).slice(0, 8);
+
+    preguntasActuales.forEach((item, index) => {
+        const num = index + 1;
+        // Mezclar también el orden de las opciones (A, B, C)
+        const opcionesMezcladas = mezclarArray(item.opciones);
+
+        let opcionesHTML = "";
+        opcionesMezcladas.forEach((op, opIndex) => {
+            const valor = op.correcta ? "correcta" : `incorrecta_${opIndex}`;
+            opcionesHTML += `
+                <label>
+                    <input type="radio" name="q${num}" value="${valor}">
+                    ${op.texto}
+                </label>
+            `;
+        });
+
+        contenedor.innerHTML += `
+            <div class="quiz-question" id="box-q${num}">
+                <b>${num}. ${item.pregunta} <span class="estado-pregunta" id="estado-q${num}"></span></b>
+                ${opcionesHTML}
+            </div>
+        `;
+    });
+}
+
 function calificar(){
 
-const respuestas={
-q1:"a",
-q2:"b",
-q3:"a",
-q4:"a",
-q5:"b",
-q6:"a",
-q7:"b",
-q8:"a"
-};
+let puntos = 0;
 
-let puntos=0;
+document.querySelectorAll(".quiz-question label").forEach(lbl=>{
+    lbl.classList.remove("opcion-correcta","opcion-incorrecta");
+});
 
-for(let pregunta in respuestas){
+for(let i = 1; i <= preguntasActuales.length; i++){
 
-const seleccion=document.querySelector(
-`input[name="${pregunta}"]:checked`
-);
+    const pregunta = `q${i}`;
+    const inputCorrecto = document.querySelector(`input[name="${pregunta}"][value="correcta"]`);
+    const seleccion = document.querySelector(`input[name="${pregunta}"]:checked`);
+    const estadoSpan = document.getElementById(`estado-${pregunta}`);
 
-if(seleccion &&
-seleccion.value===respuestas[pregunta]){
+    if(inputCorrecto && inputCorrecto.parentElement){
+        inputCorrecto.parentElement.classList.add("opcion-correcta");
+    }
 
-puntos++;
-
+    if(seleccion){
+        if(seleccion.value === "correcta"){
+            puntos++;
+            estadoSpan.textContent = "✅ Correcta";
+            estadoSpan.style.color = "#4ade80";
+        } else {
+            seleccion.parentElement.classList.add("opcion-incorrecta");
+            estadoSpan.textContent = "❌ Incorrecta";
+            estadoSpan.style.color = "#f87171";
+        }
+    } else {
+        estadoSpan.textContent = "⚠️ Sin responder";
+        estadoSpan.style.color = "#fbbf24";
+    }
 }
 
-}
+const total = preguntasActuales.length;
+const porcentaje = (puntos / total) * 100;
 
-const porcentaje=(puntos/8)*100;
+document.getElementById("barra").style.width = porcentaje + "%";
 
-document.getElementById("barra").style.width=
-porcentaje+"%";
+let mensaje = "";
 
-let mensaje="";
-
-if(porcentaje>=90){
-
-mensaje="🏆 ¡Excelente! Dominas muy bien los conceptos.";
-
-}else if(porcentaje>=70){
-
-mensaje="🔧 ¡Muy bien! Tienes una buena base.";
-
-}else if(porcentaje>=50){
-
-mensaje="📚 Vas bien, pero conviene repasar algunos sistemas.";
-
+if(porcentaje >= 90){
+    mensaje = "🏆 ¡Excelente! Dominas muy bien los conceptos.";
+}else if(porcentaje >= 70){
+    mensaje = "🔧 ¡Muy bien! Tienes una buena base.";
+}else if(porcentaje >= 50){
+    mensaje = "📚 Vas bien, pero conviene repasar algunos sistemas.";
 }else{
+    mensaje = "💪 Sigue estudiando y vuelve a intentarlo.";
+}
 
-mensaje="💪 Sigue estudiando y vuelve a intentarlo.";
+document.getElementById("resultado").innerHTML =
+`Resultado: ${puntos}/${total} (${porcentaje}%)<br>${mensaje}`;
+
+document.getElementById("btnRepetir").style.display = "inline-block";
 
 }
 
-document.getElementById("resultado").innerHTML=
-`Resultado: ${puntos}/8 (${porcentaje}%)<br>${mensaje}`;
-
+function repetirQuiz(){
+    document.getElementById("barra").style.width = "0%";
+    document.getElementById("resultado").innerHTML = "";
+    document.getElementById("btnRepetir").style.display = "none";
+    generarQuiz();
+    document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
 }
+
+// Generar las primeras 8 preguntas al abrir la página
+generarQuiz();
 
 </script>
 
